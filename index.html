@@ -5,11 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MRR VIN | Full Stack Engineering</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Noto+Sans+Khmer:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=Noto+Sans+Khmer:wght@400;700;900&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
+    /* ======= PAGE SWITCHER ======= */
+    #portfolio-wrap, #birthday-wrap { display: none; }
+    #portfolio-wrap.active, #birthday-wrap.active { display: block; }
+
+    .page-switch-btn {
+      position: fixed; bottom: 28px; right: 28px; z-index: 9000;
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 22px; border: none; border-radius: 100px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 1.5px;
+      cursor: pointer; transition: transform .3s, box-shadow .3s;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.5);
+    }
+    .page-switch-btn:hover { transform: translateY(-3px); }
+    .page-switch-btn.to-bday {
+      background: linear-gradient(135deg, #e8517a, #c8922a);
+      color: #fdf6f0;
+    }
+    .page-switch-btn.to-portfolio {
+      background: linear-gradient(135deg, #d4a853, #1a1a1a);
+      color: #f0ede8;
+      border: 1px solid rgba(212,168,83,0.3);
+    }
+
+    /* =============================================
+       YOUR ORIGINAL PORTFOLIO STYLES (unchanged)
+    ============================================= */
+    #portfolio-wrap {
       --bg: #0c0c0c;
       --bg2: #111111;
       --bg3: #161616;
@@ -21,16 +48,8 @@
       --line: rgba(240,237,232,0.08);
     }
 
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'DM Mono', monospace;
-      background: var(--bg);
-      color: var(--white);
-      overflow-x: hidden;
-      cursor: none;
-    }
+    #portfolio-wrap { font-family: 'DM Mono', monospace; background: var(--bg); color: var(--white); overflow-x: hidden; }
 
-    /* CURSOR */
     #cursor {
       width: 10px; height: 10px;
       background: var(--gold);
@@ -49,14 +68,14 @@
       transform: translate(-50%, -50%);
       transition: all 0.08s ease;
     }
-    body:has(a:hover) #cursor,
-    body:has(button:hover) #cursor { width: 18px; height: 18px; background: var(--gold); mix-blend-mode: difference; }
+    #portfolio-wrap:has(a:hover) #cursor,
+    #portfolio-wrap:has(button:hover) #cursor { width: 18px; height: 18px; background: var(--gold); mix-blend-mode: difference; }
 
     ::-webkit-scrollbar { width: 3px; }
     ::-webkit-scrollbar-thumb { background: var(--gold); }
 
     /* NAV */
-    nav {
+    #portfolio-wrap nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 300;
       display: flex; justify-content: space-between; align-items: center;
       padding: 0 60px; height: 64px;
@@ -78,7 +97,7 @@
       text-transform: uppercase; transition: color .2s;
     }
     .nav-links li a:hover, .nav-links li a.active { color: var(--gold); }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: none; background: none; border: none; padding: 4px; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
     .hamburger span { width: 22px; height: 1.5px; background: var(--white); display: block; }
 
     /* HERO */
@@ -191,7 +210,7 @@
       position: relative;
     }
     .photo-frame {
-      width: 340px; height: 420px;
+      width: 280px; height: 340px;
       position: relative;
     }
     .photo-frame::before {
@@ -240,7 +259,7 @@
     .stat-label { font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; color: var(--dim); }
 
     /* SECTIONS */
-    section { padding: 100px 60px; border-bottom: 1px solid var(--line); }
+    #portfolio-wrap section { padding: 100px 60px; border-bottom: 1px solid var(--line); background: var(--bg); }
     .sec-head { display: flex; align-items: baseline; gap: 20px; margin-bottom: 64px; }
     .sec-num {
       font-family: 'Bebas Neue', sans-serif;
@@ -292,7 +311,7 @@
     }
 
     /* PROJECTS */
-    #projects { background: var(--bg2); }
+    #portfolio-wrap #projects { background: var(--bg2); }
     .proj-grid {
       display: grid; grid-template-columns: repeat(2, 1fr);
       gap: 1px; background: var(--line);
@@ -363,7 +382,7 @@
     .exp-det { font-size: 0.78rem; color: var(--mid); line-height: 1.85; }
 
     /* EDUCATION */
-    #education { background: var(--bg2); }
+    #portfolio-wrap #education { background: var(--bg2); }
     .edu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
     .edu-card {
       background: var(--bg2); padding: 40px 34px;
@@ -437,18 +456,39 @@
       padding: 14px 32px; background: var(--gold); color: var(--bg);
       border: none; border-radius: 2px; font-family: 'DM Mono', monospace;
       font-size: 0.72rem; letter-spacing: 2.5px; text-transform: uppercase;
-      cursor: none; transition: opacity .2s, transform .2s; align-self: flex-start;
+      cursor: pointer; transition: opacity .2s, transform .2s; align-self: flex-start;
     }
     .f-btn:hover { opacity: .8; transform: translateY(-2px); }
 
+    /* YOUR MINDSET BUTTON (your original style) */
+    .mindset-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      background: #d4af37;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: 0.3s;
+    }
+    .mindset-btn:hover { background: #fff; color: #000; }
+    .contact-mindset {
+      margin-top: 15px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      opacity: 0.85;
+    }
+
     /* FOOTER */
-    footer {
+    #portfolio-wrap footer {
       padding: 28px 60px; display: flex;
       justify-content: space-between; align-items: center;
       border-top: 1px solid var(--line);
+      background: var(--bg);
     }
-    footer p { font-size: 0.7rem; color: var(--dim); letter-spacing: 1px; }
-    footer span { color: var(--gold); }
+    #portfolio-wrap footer p { font-size: 0.7rem; color: var(--dim); letter-spacing: 1px; }
+    #portfolio-wrap footer span { color: var(--gold); }
 
     /* SCROLL ANIMATIONS */
     .reveal {
@@ -457,7 +497,7 @@
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* RESPONSIVE */
+    /* RESPONSIVE PORTFOLIO */
     @media(max-width: 1100px) {
       #home { grid-template-columns: 1fr; }
       .hero-photo-col { display: none; }
@@ -469,52 +509,121 @@
       .edu-grid { grid-template-columns: 1fr; }
     }
     @media(max-width: 768px) {
-      nav { padding: 0 24px; }
+      #portfolio-wrap nav { padding: 0 24px; }
       .nav-links { display: none; flex-direction: column; position: fixed; top: 64px; left: 0; right: 0; background: rgba(12,12,12,0.98); border-bottom: 1px solid var(--line); padding: 20px 24px; gap: 4px; }
       .nav-links.open { display: flex; }
       .hamburger { display: flex; }
-      section { padding: 80px 24px; }
+      #portfolio-wrap section { padding: 80px 24px; }
       #home { padding: 100px 24px 60px; }
-      footer { flex-direction: column; gap: 8px; text-align: center; padding: 20px 24px; }
+      #portfolio-wrap footer { flex-direction: column; gap: 8px; text-align: center; padding: 20px 24px; }
       #cursor, #cursor-ring { display: none; }
-      body { cursor: default; }
     }
     @media(max-width: 560px) {
       .skills-grid, .proj-grid { grid-template-columns: 1fr; }
+    }
 
-}
-.mindset-btn{
-  margin-top:20px;
-  padding:10px 20px;
-  border:none;
-  background:#d4af37;
-  color:#000;
-  font-weight:600;
-  cursor:pointer;
-  border-radius:6px;
-  transition:0.3s;
-}
+    /* =============================================
+       BIRTHDAY PAGE STYLES
+    ============================================= */
+    #birthday-wrap {
+      --rose: #e8517a; --rose-light: #f7a8bf;
+      --bd-gold: #f0c060; --gold-deep: #c8922a;
+      --cream: #fdf6f0; --deep: #1a0a12;
+      --bd-mid: #6b3a50; --bd-dim: #b07090;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--deep); color: var(--cream);
+      min-height: 100vh; overflow-x: hidden;
+    }
 
-.mindset-btn:hover{
-  background:#fff;
-  color:#000;
-}
+    #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
 
-.contact-mindset{
-  margin-top:15px;
-  font-size:0.95rem;
-  line-height:1.6;
-  opacity:0.85;
-}
+    .bd-balloons { position: fixed; bottom: -60px; left: 0; right: 0; display: flex; justify-content: space-around; pointer-events: none; z-index: 10; }
+    .bd-balloon { font-size: 2.4rem; animation: bd-float 8s ease-in infinite; opacity: 0; }
+    .bd-balloon:nth-child(1){animation-delay:0s} .bd-balloon:nth-child(2){animation-delay:1.2s;font-size:2rem} .bd-balloon:nth-child(3){animation-delay:2.4s;font-size:3rem} .bd-balloon:nth-child(4){animation-delay:3.6s;font-size:1.8rem} .bd-balloon:nth-child(5){animation-delay:4.8s} .bd-balloon:nth-child(6){animation-delay:6s;font-size:2.6rem}
+    @keyframes bd-float { 0%{transform:translateY(0) rotate(-5deg);opacity:0} 10%{opacity:1} 85%{opacity:.8} 100%{transform:translateY(-110vh) rotate(8deg);opacity:0} }
+
+    .bd-stars { position: fixed; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .bd-star { position: absolute; width: 2px; height: 2px; background: var(--rose-light); border-radius: 50%; animation: bd-twinkle 3s ease-in-out infinite; }
+    @keyframes bd-twinkle { 0%,100%{opacity:.2;transform:scale(1)} 50%{opacity:1;transform:scale(1.6)} }
+
+    .bd-hero { position: relative; z-index: 5; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 24px 40px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(232,81,122,.18) 0%, transparent 65%),
+                  radial-gradient(ellipse at 80% 80%, rgba(240,192,96,.10) 0%, transparent 55%); }
+    .bd-pre { font-size: 0.65rem; letter-spacing: 5px; text-transform: uppercase; color: var(--rose-light); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; animation: bd-down 1s ease .2s both; }
+    .bd-pre::before, .bd-pre::after { content: ''; width: 30px; height: 1px; background: var(--rose-light); opacity: .5; }
+    .bd-date { font-size: 0.7rem; letter-spacing: 3px; color: var(--bd-gold); margin-bottom: 32px; animation: bd-down 1s ease .4s both; }
+    .bd-title { font-family: 'Playfair Display', serif; font-size: clamp(3.2rem,10vw,8rem); font-weight: 900; line-height: 1; background: linear-gradient(135deg, var(--cream) 0%, var(--rose-light) 40%, var(--bd-gold) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: bd-up 1s ease .6s both; margin-bottom: 8px; }
+    .bd-name { font-family: 'Playfair Display', serif; font-size: clamp(4rem,14vw,11rem); font-style: italic; font-weight: 700; line-height: 1; color: var(--rose); text-shadow: 0 0 60px rgba(232,81,122,.4), 0 0 120px rgba(232,81,122,.2); animation: bd-up 1s ease .8s both, bd-glow 3s ease-in-out 2s infinite; margin-bottom: 32px; }
+    @keyframes bd-glow { 0%,100%{text-shadow:0 0 60px rgba(232,81,122,.4),0 0 120px rgba(232,81,122,.2)} 50%{text-shadow:0 0 80px rgba(232,81,122,.8),0 0 160px rgba(240,192,96,.3)} }
+    .bd-candles { font-size: 2.2rem; margin-bottom: 32px; animation: bd-up 1s ease 1s both; letter-spacing: 8px; }
+    .bd-msg { font-size: 1.05rem; color: var(--bd-dim); line-height: 1.9; max-width: 520px; margin: 0 auto 48px; animation: bd-up 1s ease 1.2s both; }
+    .bd-msg .hl { color: var(--rose-light); font-weight: 500; }
+    .bd-btn { display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px; background: linear-gradient(135deg, var(--rose), var(--gold-deep)); color: var(--cream); border: none; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500; letter-spacing: 1.5px; cursor: pointer; transition: transform .3s, box-shadow .3s; box-shadow: 0 8px 30px rgba(232,81,122,.35); animation: bd-up 1s ease 1.4s both; }
+    .bd-btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 14px 40px rgba(232,81,122,.5); }
+    @keyframes bd-up { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes bd-down { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+
+    .bd-modal-wrap { position: fixed; inset: 0; background: rgba(10,4,8,.85); backdrop-filter: blur(8px); z-index: 1500; display: none; align-items: center; justify-content: center; padding: 24px; }
+    .bd-modal-wrap.open { display: flex; }
+    .bd-modal { background: linear-gradient(145deg,#1e0b14,#2a0e1c); border: 1px solid rgba(232,81,122,.2); border-radius: 20px; padding: 52px 44px; max-width: 500px; width: 100%; text-align: center; position: relative; box-shadow: 0 0 80px rgba(232,81,122,.15); animation: bd-pop .4s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes bd-pop { from{opacity:0;transform:scale(.7)} to{opacity:1;transform:scale(1)} }
+    .bd-modal-x { position: absolute; top: 18px; right: 22px; background: none; border: none; color: var(--bd-dim); font-size: 1.4rem; cursor: pointer; transition: color .2s; }
+    .bd-modal-x:hover { color: var(--rose-light); }
+    .bd-modal-emoji { font-size: 4rem; margin-bottom: 20px; display: block; }
+    .bd-modal-title { font-family: 'Playfair Display', serif; font-size: 1.9rem; color: var(--bd-gold); margin-bottom: 20px; line-height: 1.2; }
+    .bd-modal-text { font-size: .92rem; color: var(--bd-dim); line-height: 1.9; margin-bottom: 24px; }
+    .bd-modal-km { font-family: 'Noto Sans Khmer', sans-serif; font-size: .9rem; color: var(--rose-light); line-height: 2; padding: 18px 22px; border-left: 2px solid var(--rose); background: rgba(232,81,122,.05); border-radius: 0 8px 8px 0; text-align: left; }
+
+    .bd-photo-sec { position: relative; z-index: 5; padding: 80px 24px; text-align: center; }
+    .bd-ring { width: 220px; height: 220px; margin: 0 auto 28px; border-radius: 50%; position: relative; }
+    .bd-ring::before { content: ''; position: absolute; inset: -4px; border-radius: 50%; background: conic-gradient(var(--rose),var(--bd-gold),var(--rose-light),var(--bd-gold),var(--rose)); animation: bd-spin 4s linear infinite; }
+    @keyframes bd-spin { to{transform:rotate(360deg)} }
+    .bd-ring-inner { position: relative; z-index: 1; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; border: 4px solid var(--deep); background: var(--bd-mid); display: flex; align-items: center; justify-content: center; font-size: 5rem; }
+    .bd-ring-inner img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .bd-pname { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-style: italic; color: var(--rose-light); margin-bottom: 8px; }
+    .bd-psub { font-size: .72rem; letter-spacing: 3px; color: var(--bd-dim); text-transform: uppercase; }
+
+    .bd-wishes-sec { position: relative; z-index: 5; padding: 100px 24px; text-align: center; }
+    .bd-label { font-size: .62rem; letter-spacing: 4px; text-transform: uppercase; color: var(--rose-light); margin-bottom: 16px; display: block; }
+    .bd-stitle { font-family: 'Playfair Display', serif; font-size: clamp(2rem,5vw,3.5rem); color: var(--cream); margin-bottom: 60px; }
+    .bd-wish-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 20px; max-width: 960px; margin: 0 auto; }
+    .bd-wcard { background: linear-gradient(145deg,rgba(232,81,122,.06),rgba(240,192,96,.03)); border: 1px solid rgba(232,81,122,.15); border-radius: 16px; padding: 36px 28px; transition: transform .3s,border-color .3s,box-shadow .3s; }
+    .bd-wcard:hover { transform: translateY(-6px); border-color: rgba(232,81,122,.4); box-shadow: 0 20px 50px rgba(232,81,122,.1); }
+    .bd-wi { font-size: 2.4rem; margin-bottom: 18px; display: block; }
+    .bd-wt { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--bd-gold); margin-bottom: 12px; }
+    .bd-wd { font-size: .86rem; color: var(--bd-dim); line-height: 1.8; }
+
+    .bd-km-sec { position: relative; z-index: 5; max-width: 700px; margin: 0 auto; padding: 0 24px 100px; text-align: center; }
+    .bd-km-box { background: linear-gradient(145deg,rgba(232,81,122,.08),rgba(240,192,96,.04)); border: 1px solid rgba(232,81,122,.2); border-radius: 20px; padding: 48px 40px; }
+    .bd-km-em { font-size: 3rem; margin-bottom: 20px; display: block; }
+    .bd-km-text { font-family: 'Noto Sans Khmer', sans-serif; font-size: 1rem; color: var(--rose-light); line-height: 2.4; margin-bottom: 28px; }
+    .bd-eng { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.05rem; color: var(--bd-gold); line-height: 1.9; }
+
+    #birthday-wrap footer { position: relative; z-index: 5; text-align: center; padding: 32px 24px; border-top: 1px solid rgba(232,81,122,.1); background: var(--deep); }
+    #birthday-wrap footer p { font-size: .72rem; color: var(--bd-dim); letter-spacing: 1.5px; }
+    #birthday-wrap footer span { color: var(--rose-light); }
+
+    @media(max-width:600px) {
+      .bd-modal { padding: 40px 24px; }
+      .bd-wish-grid { grid-template-columns: 1fr; max-width: 400px; }
+      .bd-km-box { padding: 36px 24px; }
+    }
   </style>
 </head>
 <body>
 
-<!-- CUSTOM CURSOR -->
+<!-- PAGE SWITCH BUTTON -->
+<button class="page-switch-btn to-bday" id="switchBtn" onclick="switchPage()">🎂 &nbsp;Birthday Page</button>
+
+<!-- CURSOR -->
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 
-<!-- NAV -->
+<!-- =============================================
+     YOUR PORTFOLIO (your exact original file)
+============================================= -->
+<div id="portfolio-wrap" class="active">
+
 <nav>
   <a href="#home" class="logo">MRR<span>.</span>VEAS VIN</a>
   <ul class="nav-links" id="navMenu">
@@ -533,43 +642,36 @@
 <!-- HOME -->
 <section id="home">
   <div>
-    <div class="hero-index">Telecommunication Engineering Student & Self-Taught Developer · Cambodia 🇰🇭</div>
-    
+    <div class="hero-index">Telecommunication Engineering Student &amp; Self-Taught Developer · Cambodia 🇰🇭</div>
     <div class="avail-badge">
-      <span class="green-dot"></span> Open to Internship & Entry-Level Opportunities
+      <span class="green-dot"></span> Open to Internship &amp; Entry-Level Opportunities
     </div>
-
     <h1 class="hero-name">VEAS<br/><span class="gold">VIN</span></h1>
-
     <div class="hero-divider">
-      <span>Telecommunication & Electronics Engineering</span>
+      <span>Telecommunication &amp; Electronics Engineering</span>
     </div>
-
     <div class="hero-khmer">
       សូមស្វាគមន៍មកកាន់ Portfolio របស់ខ្ញុំ។<br/>
       ខ្ញុំកំពុងសិក្សាវិស្វកម្មទូរគមនាគមន៍ និង អេឡិចត្រូនិក<br/>
       និងអភិវឌ្ឍជំនាញ Web Development ដោយខ្លួនឯង។
     </div>
-
     <p class="hero-bio">
-      I am currently pursuing a degree in <strong>Telecommunication & Electronics Engineering</strong>,
+      I am currently pursuing a degree in <strong>Telecommunication &amp; Electronics Engineering</strong>,
       focusing on circuits, communication systems, and embedded technologies.
       In parallel, I independently develop skills in <strong>Web Development</strong>,
       working with HTML, CSS, JavaScript, PHP, and Python.
       My goal is to combine engineering knowledge with modern web technologies to build practical and scalable solutions.
     </p>
-
     <div class="hero-btns">
       <a href="#" class="btn-gold">View CV</a>
       <a href="#" class="btn-outline">Download CV</a>
     </div>
-
     <div class="tech-row">
       <div class="tech-chip">📡 Telecommunication Systems</div>
-      <div class="tech-chip">⚡ Electronics & Circuit Design</div>
+      <div class="tech-chip">⚡ Electronics &amp; Circuit Design</div>
       <div class="tech-chip">⚙️ C Programming</div>
       <div class="tech-chip">🔧 C++</div>
-      <div class="tech-chip">🤖 Arduino & Embedded Systems</div>
+      <div class="tech-chip">🤖 Arduino &amp; Embedded Systems</div>
       <div class="tech-chip">HTML</div>
       <div class="tech-chip">CSS</div>
       <div class="tech-chip">JavaScript</div>
@@ -608,9 +710,9 @@
     <div class="sk-card reveal"><span class="sk-i">📡</span><div class="sk-n">Telecom Engineering</div><div class="sk-d">Telecommunications systems, signals, and network infrastructure fundamentals.</div><div class="sk-bar"><div class="sk-fill" style="width:50%"><span class="sk-pct">50%</span></div></div></div>
     <div class="sk-card reveal"><span class="sk-i">⚡</span><div class="sk-n">Electronics</div><div class="sk-d">Circuit design, electronic components, and hardware systems.</div><div class="sk-bar"><div class="sk-fill" style="width:78%"><span class="sk-pct">78%</span></div></div></div>
     <div class="sk-card reveal"><span class="sk-i">🤖</span><div class="sk-n">Arduino / C / C++</div><div class="sk-d">Microcontroller programming, hardware projects, and system-level code.</div><div class="sk-bar"><div class="sk-fill" style="width:80%"><span class="sk-pct">80%</span></div></div></div>
-    <div class="sk-card reveal"><span class="sk-i">🟧</span><div class="sk-n">HTML & CSS</div><div class="sk-d">Self-taught. Semantic markup, responsive layouts, and modern CSS.</div><div class="sk-bar"><div class="sk-fill" style="width:50%"><span class="sk-pct">50%</span></div></div></div>
+    <div class="sk-card reveal"><span class="sk-i">🟧</span><div class="sk-n">HTML &amp; CSS</div><div class="sk-d">Self-taught. Semantic markup, responsive layouts, and modern CSS.</div><div class="sk-bar"><div class="sk-fill" style="width:50%"><span class="sk-pct">50%</span></div></div></div>
     <div class="sk-card reveal"><span class="sk-i">🟨</span><div class="sk-n">JavaScript</div><div class="sk-d">Self-taught. Interactive web pages, DOM manipulation, and ES6+ features.</div><div class="sk-bar"><div class="sk-fill" style="width:65%"><span class="sk-pct">65%</span></div></div></div>
-    <div class="sk-card reveal"><span class="sk-i">🐘</span><div class="sk-n">PHP & Python</div><div class="sk-d">Self-taught. Backend scripting, server-side logic, and basic automation.</div><div class="sk-bar"><div class="sk-fill" style="width:75%"><span class="sk-pct">75%</span></div></div></div>
+    <div class="sk-card reveal"><span class="sk-i">🐘</span><div class="sk-n">PHP &amp; Python</div><div class="sk-d">Self-taught. Backend scripting, server-side logic, and basic automation.</div><div class="sk-bar"><div class="sk-fill" style="width:75%"><span class="sk-pct">75%</span></div></div></div>
   </div>
 </section>
 
@@ -621,74 +723,35 @@
     <h2 class="sec-title">Projects</h2>
     <div class="sec-line"></div>
   </div>
-
   <div class="proj-grid">
-
-    <!-- Project 1 -->
     <a href="#" class="proj-card reveal">
       <div class="proj-num">Project · 001</div>
       <div class="proj-title">Guesthouse Management System</div>
-      <div class="proj-desc">
-        Web-based system for managing rooms, tenants, payments, and branch control.
-        Designed role-based authentication for Admin and Staff with branch-level access control.
-      </div>
-      <div class="proj-tags">
-        <span class="tag">HTML</span>
-        <span class="tag">CSS</span>
-        <span class="tag">JavaScript</span>
-        <span class="tag">System Design</span>
-      </div>
+      <div class="proj-desc">Web-based system for managing rooms, tenants, payments, and branch control. Designed role-based authentication for Admin and Staff with branch-level access control.</div>
+      <div class="proj-tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">System Design</span></div>
       <div class="proj-arrow">View Project →</div>
     </a>
-
-    <!-- Project 2 -->
     <a href="#" class="proj-card reveal">
       <div class="proj-num">Project · 002</div>
       <div class="proj-title">Digital Clock Using IC (24-Hour Format)</div>
-      <div class="proj-desc">
-        Designed and implemented a 24-hour digital clock using logic ICs without microcontroller.
-        Integrated counters, decoders, and seven-segment displays for time display.
-      </div>
-      <div class="proj-tags">
-        <span class="tag">Digital Electronics</span>
-        <span class="tag">IC Logic</span>
-        <span class="tag">Circuit Design</span>
-      </div>
+      <div class="proj-desc">Designed and implemented a 24-hour digital clock using logic ICs without microcontroller. Integrated counters, decoders, and seven-segment displays for time display.</div>
+      <div class="proj-tags"><span class="tag">Digital Electronics</span><span class="tag">IC Logic</span><span class="tag">Circuit Design</span></div>
       <div class="proj-arrow">View Project →</div>
     </a>
-
-    <!-- Project 3 -->
     <a href="#" class="proj-card reveal">
       <div class="proj-num">Project · 003</div>
       <div class="proj-title">LED Matrix Display Controller (16x64)</div>
-      <div class="proj-desc">
-        Built and programmed a 16x64 LED matrix display using Arduino.
-        Implemented scrolling text and serial communication control.
-      </div>
-      <div class="proj-tags">
-        <span class="tag">Arduino</span>
-        <span class="tag">Embedded Systems</span>
-        <span class="tag">C++</span>
-      </div>
+      <div class="proj-desc">Built and programmed a 16x64 LED matrix display using Arduino. Implemented scrolling text and serial communication control.</div>
+      <div class="proj-tags"><span class="tag">Arduino</span><span class="tag">Embedded Systems</span><span class="tag">C++</span></div>
       <div class="proj-arrow">View Project →</div>
     </a>
-
-    <!-- Project 4 -->
     <a href="#" class="proj-card reveal">
       <div class="proj-num">Project · 004</div>
       <div class="proj-title">Audio Transmission via Laser Beam</div>
-      <div class="proj-desc">
-        Designed a wireless audio transmission system using laser light modulation.
-        Built transmitter and receiver circuits and tested signal quality.
-      </div>
-      <div class="proj-tags">
-        <span class="tag">Analog Electronics</span>
-        <span class="tag">Signal Processing</span>
-        <span class="tag">Circuit Analysis</span>
-      </div>
+      <div class="proj-desc">Designed a wireless audio transmission system using laser light modulation. Built transmitter and receiver circuits and tested signal quality.</div>
+      <div class="proj-tags"><span class="tag">Analog Electronics</span><span class="tag">Signal Processing</span><span class="tag">Circuit Analysis</span></div>
       <div class="proj-arrow">View Project →</div>
     </a>
-
   </div>
 </section>
 
@@ -699,54 +762,34 @@
     <h2 class="sec-title">Experience</h2>
     <div class="sec-line"></div>
   </div>
-
   <div class="exp-list">
-
-    <!-- Education -->
     <div class="exp-row reveal">
       <div class="exp-yr">2021 — Present<br/><br/>Undergraduate</div>
       <div>
         <div class="exp-co-badge">Education</div>
-        <div class="exp-role">BEng in Telecommunication & Electronics Engineering</div>
+        <div class="exp-role">BEng in Telecommunication &amp; Electronics Engineering</div>
         <div class="exp-co">Royal University of Phnom Penh</div>
-        <div class="exp-det">
-          Studying communication systems, electronic circuits, signal processing, and embedded systems.
-          Developing strong analytical and problem-solving skills through academic projects and laboratory work.
-        </div>
+        <div class="exp-det">Studying communication systems, electronic circuits, signal processing, and embedded systems. Developing strong analytical and problem-solving skills through academic projects and laboratory work.</div>
       </div>
     </div>
-
-    <!-- Web Development Training -->
     <div class="exp-row reveal">
       <div class="exp-yr">2022 — Present<br/><br/>Self-Learning</div>
       <div>
         <div class="exp-co-badge">Technical Training</div>
         <div class="exp-role">Web Developer (HTML, CSS, JavaScript)</div>
-        <div class="exp-co">Personal & Online Projects</div>
-        <div class="exp-det">
-          Designing and building responsive websites and user interfaces.
-          Practicing modern frontend development and improving UI/UX design skills.
-          Working on personal portfolio and small system development projects.
-        </div>
+        <div class="exp-co">Personal &amp; Online Projects</div>
+        <div class="exp-det">Designing and building responsive websites and user interfaces. Practicing modern frontend development and improving UI/UX design skills. Working on personal portfolio and small system development projects.</div>
       </div>
     </div>
-
-<!-- Internship -->
-<div class="exp-row reveal">
-  <div class="exp-yr">2022 — 2023<br/><br/>Internship</div>
-  <div>
-    <div class="exp-co-badge">Internship</div>
-    <div class="exp-role">Electronic Technology Intern</div>
-    <div class="exp-co">ETEC Center</div>
-    <div class="exp-det">
-      Assisted in assembling, testing, and troubleshooting electronic circuits and communication devices.
-      Worked with measurement tools such as multimeters and oscilloscopes to analyze circuit performance.
-      Supported maintenance and basic repair of electronic equipment under senior engineer supervision.
-      Gained practical experience in circuit design, PCB basics, and laboratory safety procedures.
+    <div class="exp-row reveal">
+      <div class="exp-yr">2022 — 2023<br/><br/>Internship</div>
+      <div>
+        <div class="exp-co-badge">Internship</div>
+        <div class="exp-role">Electronic Technology Intern</div>
+        <div class="exp-co">ETEC Center</div>
+        <div class="exp-det">Assisted in assembling, testing, and troubleshooting electronic circuits and communication devices. Worked with measurement tools such as multimeters and oscilloscopes to analyze circuit performance. Supported maintenance and basic repair of electronic equipment under senior engineer supervision. Gained practical experience in circuit design, PCB basics, and laboratory safety procedures.</div>
+      </div>
     </div>
-  </div>
-</div>
-
   </div>
 </section>
 
@@ -754,50 +797,36 @@
 <section id="education">
   <div class="sec-head">
     <span class="sec-num">04</span>
-    <h2 class="sec-title">Education & Certifications</h2>
+    <h2 class="sec-title">Education &amp; Certifications</h2>
     <div class="sec-line"></div>
   </div>
-
   <div class="edu-grid">
-
-    <!-- University -->
     <div class="edu-card reveal">
       <span class="edu-icon">🎓</span>
-      <div class="edu-deg">BEng — Telecommunication & Electronics Engineering</div>
+      <div class="edu-deg">BEng — Telecommunication &amp; Electronics Engineering</div>
       <div class="edu-sch">Royal University of Phnom Penh</div>
       <div class="edu-yr">2021 — Present</div>
-      <div class="edu-desc">
-        Studying communication systems, electronic circuits, signal processing, embedded systems, and networking.
-        Completed laboratory projects involving circuit design, microcontrollers, and system analysis.
-      </div>
+      <div class="edu-desc">Studying communication systems, electronic circuits, signal processing, embedded systems, and networking. Completed laboratory projects involving circuit design, microcontrollers, and system analysis.</div>
     </div>
-
-    <!-- Technical Training -->
     <div class="edu-card reveal">
       <span class="edu-icon">💻</span>
       <div class="edu-deg">Web Development Training</div>
       <div class="edu-sch">ETEC Center</div>
       <div class="edu-yr">2024 — 2026</div>
-      <div class="edu-desc">
-        Trained in HTML, CSS, JavaScript, C++, and basic networking.
-        Developed responsive websites and small system-based projects.
-      </div>
+      <div class="edu-desc">Trained in HTML, CSS, JavaScript, C++, and basic networking. Developed responsive websites and small system-based projects.</div>
     </div>
-
-    <!-- Certificates -->
     <div class="edu-card reveal">
       <span class="edu-icon">📜</span>
       <div class="edu-deg">Professional Certificates</div>
-      <div class="edu-sch">Online & Technical Training</div>
+      <div class="edu-sch">Online &amp; Technical Training</div>
       <div class="edu-yr">2024 — 2026</div>
       <div class="cert-list">
         <div class="cert-item">Web Development Certificate</div>
         <div class="cert-item">JavaScript Fundamentals</div>
         <div class="cert-item">Basic Networking</div>
-        <div class="cert-item">Electronics Lab & Circuit Analysis</div>
+        <div class="cert-item">Electronics Lab &amp; Circuit Analysis</div>
       </div>
     </div>
-
     <div class="edu-card reveal">
       <span class="edu-icon">🌍</span>
       <div class="edu-deg">Languages</div>
@@ -819,102 +848,177 @@
     <h2 class="sec-title">Contact</h2>
     <div class="sec-line"></div>
   </div>
-
   <div class="contact-grid">
-    
-    <!-- LEFT SIDE -->
     <div class="reveal">
-      <h2 class="contact-big">
-        LET'S<br/>BUILD<br/>
-        <span class="gold">TOGETHER.</span>
-      </h2>
-
-      <p class="contact-sub">
-        Open to freelance work, full-time roles, and interesting collaborations. 
-        Have a project or opportunity? Let's talk.
-      </p>
-
-      <!-- HIDDEN TEXT -->
-      
+      <h2 class="contact-big">LET'S<br/>BUILD<br/><span class="gold">TOGETHER.</span></h2>
+      <p class="contact-sub">Open to freelance work, full-time roles, and interesting collaborations. Have a project or opportunity? Let's talk.</p>
       <div class="c-links">
-
-        <!-- EMAIL -->
         <a href="mailto:veasvin6@gmail.com" class="c-link">
-          <div class="c-icon">✉</div>
-          veasvin6@gmail.com
+          <div class="c-icon">✉</div>veasvin6@gmail.com
         </a>
-
-        <!-- GITHUB -->
         <a href="https://github.com/veasvin6-del?tab=repositories" target="_blank" class="c-link">
-          <div class="c-icon" style="font-family:monospace">gh</div>
-          github.com/veasvin6-del
+          <div class="c-icon" style="font-family:monospace">gh</div>github.com/veasvin6-del
         </a>
-
-        <!-- TELEGRAM -->
         <a href="https://t.me/vin_officials" target="_blank" class="c-link">
-          <div class="c-icon">✈</div>
-          Telegram · @vin_officials
+          <div class="c-icon">✈</div>Telegram · @vin_officials
         </a>
-
-        <!-- TIKTOK -->
         <a href="https://www.tiktok.com/@vinlove19" target="_blank" class="c-link">
-          <div class="c-icon">🎵</div>
-          TikTok · @vinlove19
+          <div class="c-icon">🎵</div>TikTok · @vinlove19
         </a>
-
-        <!-- FACEBOOK -->
         <a href="https://www.facebook.com/share/1F3Rzy3QEW/" target="_blank" class="c-link">
-          <div class="c-icon">f</div>
-          Facebook Profile
+          <div class="c-icon">f</div>Facebook Profile
         </a>
- <!-- NEW MINDSET BUTTON -->
-      <button class="mindset-btn" onclick="toggleMindset()">
-        My Learning Mindset
-      </button>
-        <p id="mindsetText" class="contact-mindset" style="display:none;">
-        ខ្ញុំជាមនុស្សដែលចង់ចេះអ្វីថ្មីៗជានិច្ច ទោះបីពេលខ្លះមិនចង់រៀនក៏ដោយ ប៉ុន្តែខ្ញុំមិនឈប់ព្យាយាមអភិវឌ្ឍខ្លួនឯងឡើយ។ <br/>
-        <span class="gold">
-          English:<br/>
-        <span class="gold">
-          I always want to grow — even when learning feels hard, I keep pushing myself forward.
-        </span>
-      </p>
+          
 
-        
-      </div>
-    </div>
-
-    <!-- RIGHT SIDE FORM -->
     <div class="form reveal">
       <div class="f-field">
         <label>Your Name</label>
-        <input type="text" placeholder="John Doe"/>
+        <input type="text" placeholder="Mrr VIN"/>
       </div>
-
       <div class="f-field">
         <label>Email Address</label>
-        <input type="email" placeholder="john@email.com"/>
+        <input type="email" placeholder="vin@email.com"/>
       </div>
-
       <div class="f-field">
-        <label>Message</label>
+        <label>Message to</label>
         <textarea rows="6" placeholder="Hi Vin, I'd like to work with you..."></textarea>
       </div>
-
       <button class="f-btn">Send Message →</button>
     </div>
-
   </div>
+        <!-- YOUR ORIGINAL MINDSET BUTTON -->
+        <br/><button class="f-btn" onclick="toggleMindset()">My Learning Mindset</button>
+        <p id="mindsetText" class="contact-mindset" style="display:none;">
+          <span style="color:#d6e45e">My Learning Mindset:<br/><br/>
+          </span>​ចង់ចេះ តែមិនចង់រៀន!<br/>
+          ខ្ញុំជាមនុស្សដែលចង់ចេះអ្វីថ្មីៗជានិច្ច ទោះបីពេលខ្លះមិនចង់រៀនក៏ដោយ ប៉ុន្តែខ្ញុំមិនឈប់ព្យាយាមអភិវឌ្ឍខ្លួនឯងឡើយ។<br/>
+          <span style="color:#eec470">English:<br/>
+          I always want to grow — even when learning feels hard, I keep pushing myself forward.</span>
+        </p>
+      </div>
+    </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <p>© 2026 <span>VEAS VIN</span>. All rights reserved.</p>
   <p>Full Stack Engineering · <span>Cambodia 🇰🇭</span></p>
 </footer>
 
+</div><!-- /portfolio -->
+
+
+<!-- =============================================
+     BIRTHDAY PAGE — VIN
+============================================= -->
+<div id="birthday-wrap">
+  <canvas id="confetti-canvas"></canvas>
+  <div class="bd-stars" id="bdStars"></div>
+
+  <div class="bd-balloons">
+    <div class="bd-balloon">🎈</div>
+    <div class="bd-balloon">🎂</div>
+    <div class="bd-balloon">🎀</div>
+    <div class="bd-balloon">🎈</div>
+    <div class="bd-balloon">💛</div>
+    <div class="bd-balloon">🎈</div>
+    <div class="bd-balloon">🎉</div>
+    <div class="bd-balloon">🎈</div>
+    <div class="bd-balloon">👑</div>
+    <div class="bd-balloon">🎀</div>
+  </div>
+
+  <div class="bd-modal-wrap" id="bdModal">
+    <div class="bd-modal">
+      <button class="bd-modal-x" onclick="closeBdModal()">✕</button>
+      <span class="bd-modal-emoji">🎁</span>
+      <div class="bd-modal-title">A Special Message for You</div>
+      <p class="bd-modal-text">
+        Another year reminds me that every challenge I faced helped shape who I am today. Each step, each mistake, and each lesson has made me stronger and more determined to move forward. ✨
+        Today I celebrate not only my birthday, but also my growth, my dreams, and the courage to keep believing in myself. 🌟 
+      </p>
+      <div class="bd-modal-km">
+        On this beautiful day, may every dream you hold close begin to bloom.
+        You deserve all the joy, laughter, and love this world has to offer.
+        Keep shining — the best chapter of your life is just beginning.🎂
+      </div>
+    </div>
+  </div>
+
+  <section class="bd-hero">
+    <div class="bd-pre">A Very Special Day</div>
+    <div class="bd-date">✦ 09 · 05 · 2026 ✦</div>
+    <div class="bd-title">Happy Birthday</div>
+    <h1 class="bd-name">Vin</h1>
+    <div class="bd-candles">🕯🎂🕯</div>
+    <p class="bd-msg">
+      Today we celebrate <span class="hl">you</span> — your kindness, your strength,
+      your beautiful soul. May this year bring you <span class="hl">endless happiness</span>,
+      new adventures, and all the love you deserve. 🌸
+    </p>
+    <button class="bd-btn" onclick="openBdSurprise()">🎁 &nbsp;Open Your Surprise</button>
+  </section>
+
+<div class="bd-photo-sec">
+  <div class="bd-ring">
+    <div class="bd-ring-inner">
+      <img src="vin.png" alt="Vin"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+      <span style="display:none;">🎂</span>
+    </div>
+  </div>
+  <div class="bd-pname">VIN</div>
+  <div class="bd-psub">My Birthday Me · 2026 ✦</div>
+</div>
+
+  <div class="bd-km-sec">
+    <div class="bd-km-box">
+      <span class="bd-km-em">👑</span>
+      <p class="bd-km-text">
+        រីករាយថ្ងៃកំណើត Vin!​🎂<br/>
+        សូមឲ្យ Vin មានសុខភាពល្អ សំណាងល្អ ជួបតែរៀងល្អក្នុងជីវិត😊<br/>
+        ជោគជ័យគ្រប់ភាកិច្ច ទាំងការសិក្សា និងការងារ🥇<br/>
+        ហើយសប្បាយរីករាយជានិច្ច🥰<br/>
+        ថ្ងៃនេះជាថ្ងៃពិសេសរបស់ខ្ញុំ អរគុណសម្រាប់ការរាប់អាន💕
+      </p>
+      <p class="bd-eng">
+        "You are braver than you believe, stronger than you seem,<br/>
+        and more loved than you will ever know."<br/>
+        — Happy Birthday, Vin 🎂
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    <p>Give <span>for <span>You</span> · Birthday 2026 · <span>Cambodia 🇰🇭</span></p>
+  </footer>
+</div>
+
+
 <script>
-  // Custom cursor
+  /* ===== PAGE SWITCHER ===== */
+  let curPage = 'portfolio';
+  function switchPage() {
+    const pf = document.getElementById('portfolio-wrap');
+    const bd = document.getElementById('birthday-wrap');
+    const btn = document.getElementById('switchBtn');
+    if (curPage === 'portfolio') {
+      pf.classList.remove('active'); bd.classList.add('active');
+      btn.className = 'page-switch-btn to-portfolio';
+      btn.innerHTML = '🖥️ &nbsp;Portfolio';
+      curPage = 'birthday';
+      document.title = 'Happy Birthday VIN 🎂';
+      initBirthday(); window.scrollTo(0,0);
+    } else {
+      bd.classList.remove('active'); pf.classList.add('active');
+      btn.className = 'page-switch-btn to-bday';
+      btn.innerHTML = '🎂 &nbsp;Birthday Page';
+      curPage = 'portfolio';
+      document.title = 'MRR VIN | Full Stack Engineering';
+      window.scrollTo(0,0);
+    }
+  }
+
+  /* ===== YOUR ORIGINAL PORTFOLIO JS ===== */
   const cur = document.getElementById('cursor');
   const ring = document.getElementById('cursor-ring');
   document.addEventListener('mousemove', e => {
@@ -926,23 +1030,21 @@
     }, 60);
   });
 
-  // Nav menu
   function toggleMenu() { document.getElementById('navMenu').classList.toggle('open'); }
   function closeMenu() { document.getElementById('navMenu').classList.remove('open'); }
 
-  // Active nav links
-  const sections = document.querySelectorAll('section[id]');
+  const sections = document.querySelectorAll('#portfolio-wrap section[id]');
   const links = document.querySelectorAll('.nav-links a');
   window.addEventListener('scroll', () => {
-    let cur = '';
-    sections.forEach(s => { if(window.scrollY >= s.offsetTop - 90) cur = s.id; });
+    if (curPage !== 'portfolio') return;
+    let c = '';
+    sections.forEach(s => { if(window.scrollY >= s.offsetTop - 90) c = s.id; });
     links.forEach(a => {
       a.classList.remove('active');
-      if(a.getAttribute('href') === '#' + cur) a.classList.add('active');
+      if(a.getAttribute('href') === '#' + c) a.classList.add('active');
     });
   });
 
-  // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver(entries => {
     entries.forEach((entry, i) => {
@@ -954,17 +1056,43 @@
   }, { threshold: 0.1 });
   reveals.forEach(el => observer.observe(el));
 
-  
-</script>
-<script>
-function toggleMindset() {
-  var text = document.getElementById("mindsetText");
-  if (text.style.display === "none") {
-    text.style.display = "block";
-  } else {
-    text.style.display = "none";
+  /* ===== YOUR ORIGINAL MINDSET TOGGLE ===== */
+  function toggleMindset() {
+    var text = document.getElementById("mindsetText");
+    text.style.display = text.style.display === "none" ? "block" : "none";
   }
-}
+
+  /* ===== BIRTHDAY JS ===== */
+  let bdInited = false;
+  function initBirthday() {
+    if(bdInited){ launchConfetti(); return; }
+    bdInited = true;
+    const stEl = document.getElementById('bdStars');
+    for(let i=0;i<80;i++){
+      const s = document.createElement('div'); s.className='bd-star';
+      s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%';
+      s.style.animationDelay=(Math.random()*4)+'s';
+      s.style.animationDuration=(2+Math.random()*3)+'s';
+      s.style.width=s.style.height=(1+Math.random()*2.5)+'px';
+      stEl.appendChild(s);
+    }
+    const cvs = document.getElementById('confetti-canvas');
+    cvs.width=window.innerWidth; cvs.height=window.innerHeight;
+    window.addEventListener('resize',()=>{ cvs.width=window.innerWidth; cvs.height=window.innerHeight; });
+    setTimeout(launchConfetti, 600);
+  }
+
+  const bdCvs = document.getElementById('confetti-canvas');
+  const bdCtx = bdCvs.getContext('2d');
+  const bdColors=['#e8517a','#f7a8bf','#f0c060','#fff0f5','#c8f0a0','#a0d8f0','#d4a8f7'];
+  let bdParts=[],bdRun=false,bdF=0;
+  function mkP(){ return {x:Math.random()*bdCvs.width,y:-10,size:5+Math.random()*8,color:bdColors[Math.floor(Math.random()*bdColors.length)],sy:2+Math.random()*4,sx:(Math.random()-.5)*3,rot:Math.random()*360,rs:(Math.random()-.5)*6,shape:Math.random()>.5?'r':'c',alpha:1}; }
+  function drwP(p){ bdCtx.save();bdCtx.globalAlpha=p.alpha;bdCtx.fillStyle=p.color;bdCtx.translate(p.x,p.y);bdCtx.rotate(p.rot*Math.PI/180);if(p.shape==='r'){bdCtx.fillRect(-p.size/2,-p.size/4,p.size,p.size/2);}else{bdCtx.beginPath();bdCtx.arc(0,0,p.size/2,0,Math.PI*2);bdCtx.fill();}bdCtx.restore(); }
+  function animConf(){ if(!bdRun)return;bdCtx.clearRect(0,0,bdCvs.width,bdCvs.height);if(bdF<200)for(let i=0;i<4;i++)bdParts.push(mkP());bdF++;bdParts.forEach(p=>{p.x+=p.sx;p.y+=p.sy;p.rot+=p.rs;p.sy+=0.04;if(p.y>bdCvs.height)p.alpha-=0.05;});bdParts=bdParts.filter(p=>p.alpha>0);bdParts.forEach(drwP);if(bdParts.length>0||bdF<200)requestAnimationFrame(animConf);else{bdRun=false;bdCtx.clearRect(0,0,bdCvs.width,bdCvs.height);} }
+  function launchConfetti(){ bdParts=[];bdF=0;bdRun=true;animConf(); }
+  function openBdSurprise(){ document.getElementById('bdModal').classList.add('open'); launchConfetti(); }
+  function closeBdModal(){ document.getElementById('bdModal').classList.remove('open'); }
+  document.getElementById('bdModal').addEventListener('click',function(e){if(e.target===this)closeBdModal();});
 </script>
 </body>
 </html>
